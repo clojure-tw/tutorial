@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title>Clojure Tutorial: Clojure Crash Tutorial</title>
+    <link rel="canonical" href="https://clojure.tw/tutorial">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="//fonts.googleapis.com/css?family=Alegreya:400italic,700italic,400,700" rel="stylesheet"
+          type="text/css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/styles/default.min.css">
+    <link href="/tutorial/css/screen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+
+
+<nav class="navbar navbar-default">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/tutorial">Clojure Tutorial</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li  class="active" ><a href="/tutorial">Home</a></li>
+                <li
+                ><a href="/tutorial/archives">Archives</a></li>
+                
+                <li
+                >
+                <a href="/tutorial/pages-output/advantage">Advantage</a>
+                </li>
+                
+                <li><a href="/tutorial/feed.xml">RSS</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                        More <span class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li class="dropdown-header">Links</li>
+                        <li><a href="http://cryogenweb.org/docs/home.html">Cryogen Docs</a></li>
+                        <li><a href="http://carmenla.me/blog/archives">Carmen's Blog</a></li>
+                        
+                        <li><a href="/tutorial/pages-output/intellij">IntelliJ</a></li>
+                        
+                        <li><a href="/tutorial/pages-output/vim">VIM</a></li>
+                        
+                        <li><a href="/tutorial/pages-output/emacs">Emacs</a></li>
+                        
+                        <li><a href="/tutorial/pages-output/environment-macos">MacOS</a></li>
+                        
+                        <li><a href="/tutorial/pages-output/environment-windows">Windows</a></li>
+                        
+                        <li><a href="/tutorial/pages-output/vscode">VSCode</a></li>
+                        
+                        <li><a href="/tutorial/pages-output/another-page">Another Page</a></li>
+                        
+
+                        
+                        <li class="divider"></li>
+                        <li class="dropdown-header">Recent Posts</li>
+                        
+                        <li><a href="/tutorial/posts-output/2015-01-01-docs">old </a></li>
+                        
+                        
+
+                        
+                    </ul>
+                </li>
+            </ul>
+        </div><!--/.nav-collapse -->
+    </div><!--/.container-fluid -->
+</nav>
+
+
+<div class="container">
+
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div id="content">
+                
+<div id="custom-page">
+    <div id="page-header">
+        <h2>Clojure Crash Tutorial</h2>
+    </div>
+    <ol class="content"><li><a href="#clojure_和_lisp_的關係">Clojure 和 LISP 的關係</a></li><li><a href="#literal_representation_data">Literal Representation Data</a></li><ol><li><a href="#numeric">Numeric</a></li><li><a href="#character,_string_and_regular_expression">Character, String And Regular Expression</a></li><li><a href="#symbol_&amp;&amp;#95;keyword">Symbol & Keyword</a></li></ol><li><a href="#註解">註解</a></li><li><a href="#lisp_form">LISP FORM</a></li><li><a href="#list">List</a></li><ol><li><a href="#functions_of_list">Functions of List</a></li></ol><li><a href="#collection">Collection</a></li><ol><li><a href="#sequencetial_collection">Sequencetial Collection</a></li><li><a href="#hashed_collection">Hashed Collection</a></li></ol><li><a href="#function">Function</a></li><li><a href="#special_form">Special Form</a></li><ol><li><a href="#1._def">1. def</a></li><li><a href="#2._if">2. if</a></li><li><a href="#3._do">3. do</a></li><li><a href="#4._let">4. let</a></li><li><a href="#5._quote">5. quote</a></li><li><a href="#6._fn">6. fn</a></li><li><a href="#7._loop_&amp;&amp;#95;recur">7. loop & recur</a></li></ol><li><a href="#what_macro_?">What Macro ?</a></li><li><a href="#flow_control">Flow Control</a></li><li><a href="#side_effect">Side Effect</a></li><li><a href="#重新回顧_clojure_verbs：lisp_form、special_form、macro">重新回顧 Clojure Verbs：LISP Form、Special Form、Macro</a></li><li><a href="#結語">結語</a></li><li><a href="#code_block_的小袐密">Code Block 的小袐密</a></li></ol>
+    <h2 id="clojure_和_lisp_的關係">Clojure 和 LISP 的關係</h2><p>在語法上，目前台面上看到的大部份主流語言都深受 C 影響，如 Java、JavaScript、C#、PHP 等， 而 C 的語法深受另一個更早期的語言影響 – <a href="https://zh.wikipedia.org/wiki/ALGOL">ALGOL</a>。 另外和 ALOGL 同時期，也有個語言也影響現代語言，目前語言常見的功能，像是 High Order Function、Garbage Collection、REPL、Recursion 等， 最早是在 <a href="https://zh.wikipedia.org/wiki/LISP">LISP</a> 中出現的。</p><p>LISP 是 LISt Processor 的簡寫，最大的特點就是它的語法：</p><pre><code>(car (cdr '(1 2 3 4 5)))
+</code></pre><p>這種語法而上面這段程式所做的行為是：</p><ol><li>把 <code>'(1 2 3 4 5)</code> 這個資料（這是一個 List）做為 <code>cdr</code> 這個 Function 輸入</li><li>把步驟 1 的輸出再當成參數輸入到 <code>car</code> 這個 Function 中</li></ol><p>Clojure 是一個 LISP 的方言，所以 Clojure 的語法就前一個例子那樣，只不過和 LISP 不同的是：</p><ol><li>用字更現代，不會有義意不明的名稱如：car、cdr 等</li><li>吸收了一些 Functional Programming 後來所發展的功能，像是 Immutable Data Structure</li><li>運作在 JVM 上，所以還有和 Java 互動的功能</li><li>Clojure 沒有 cons cell</li><li>...</li></ol><p>由於本文主要針對連 LISP 都沒聽過的受眾，如果是 LISPer 想了解更多可以直接參考 Clojure Official 的 <a href="https://clojure.org/reference/lisps">Differences with other Lisps</a>。</p><p>p.s. car 和 cdr 其實是 <code>contents of the address part of register number</code> 和 <code>contents of the decrement part of register number</code>，這其實是在說早期的電腦硬體架構</p><h2 id="literal_representation_data">Literal Representation Data</h2><p>前述給了一個 LISP 的程式例子：</p><pre><code>(car (cdr '(1 2 3 4 5)))
+</code></pre><p>應該很容易注意到 LISP 中是直接用<code>空白</code>分隔東西的，在 LISP 中這些東西有一個專有名稱叫<code>atom</code>，是指說無法再被分割的資料， 反之 list 就是可以被分割的資料：</p><pre><code>car   ; &lt;- 這是 atom
+1     ; &lt;- 這還是 atom
+(1 2) ; &lt;- 這是 list
+()    ; &lt;- 空的 list，因為他不能被分割了，所以是 atom
+</code></pre><p>但在 Clojure 中，atom 是另一個和 Concurrency 有關的名稱，所以 Clojure 不會稱那些<code>東西</code>為 <code>atom</code>，那我們要如果稱呼這些東西？ 以官方的文件續述來看，會叫這些東西為 <code>Element</code>，中譯<code>元素</code> （<a href="https://www.microsoft.com/zh-tw/language/Search?&amp;searchTerm=element&amp;langID=129&amp;Source=true&amp;productid=0">參考 Microsoft 語言入口網站</a>），這個名稱也符合較為新的語言如 JavaScript, Python 等對其資料結構內容物的稱呼， Clojure 在很多名稱上去除了古老 LISP 的用詞。</p><p>再來讓我們看看這些<code>元素</code>，元素有型態和值，比方說 <code>1</code> 表示他是值為 <code>1</code> 的 <code>Integer</code>，Clojure 在程式語言的分類中，是屬於 <code>強型別</code> 的語言， 也就是在運算中不會任意幫使用者更動原本元素該有的型態，一定要轉型才可以，如以下例子就會出錯：</p><pre><code class="klipse nohighlight">(+ "number = " 1)
+</code></pre><p>而以下例子則正確：</p><pre><code class="klipse nohighlight">(str "number = " 1)
+</code></pre><p>原因是 <code>str</code> Function 有把進來的參數轉成字串。</p><p>因為 Clojure 寄身在 Java 上，在 Clojure 其實也可以用 Java Object 的方式定義資料，但目前我們只先關心 Literal Data Type， 所謂 <a href="https://en.wikipedia.org/wiki/Literal_%28computer_programming%29">Literal</a>，是用特定符號表達程式中資料的寫法， 如前面的例子中 <code>1</code> 表示 Integer，<code>"nuber = "</code> 表示 String。</p><h3 id="numeric">Numeric</h3><p>在 Clojure 中，Literal 的寫法可以表示的數字型態有：</p><ol><li>Integer</li><li>Float Point</li><li>Big Number</li><li>Ratio</li></ol><h3 id="character,_string_and_regular_expression">Character, String And Regular Expression</h3><h3 id="symbol_&amp;&amp;#95;keyword">Symbol &amp; Keyword</h3><h2 id="註解">註解</h2><p>註解不是程式碼，是為了在解式碼間記錄一些資訊，可能是程式的說明。 Clojure 的註解用 <code>;</code> Semicolon 做為開頭，在 <code>;</code>  後面的字串都不會被當做程式碼。</p><p>一般在 Clojure 的程式碼中，常常會看到 <code>;</code>、<code>;;</code>、<code>;;;</code> 這三種樣子的註解開頭，在慣例上只是為了表示三種不同階級的註解，功能上並沒有差別。</p><ul><li><code>;</code> 表示單行註解</li><li><code>;;</code> 表示某個程式區塊的註解</li><li><code>;;;</code> 表示檔案的註解</li></ul><h2 id="lisp_form">LISP FORM</h2><p>在 Clojure 中，一段程式的寫法為：</p><pre><code class="klipse nohighlight">(str "Hello" " " "World" "!")
+</code></pre><p>而一組 List Collection 的資料結構為：</p><pre><code class="klipse nohighlight">'(str "Hello" " " "World" "!")
+</code></pre><p>雖然都是用小括號的寫法<code>(</code> <code>)</code>，但差異在左括號前有沒有 <code>Quote</code> (<code>'</code>)，若左括號前有 <code>'</code> 時， 該 List 不會被 <code>Eval</code>，也就是不會被當成程式碼執行，<code>'( &lt;任意元素&gt; )</code> 的這個寫法也可以用當成程式碼寫的方法：</p><pre><code class="klipse nohighlight">'(1 2 3 4 5)
+</code></pre><p>用 <code>Quote Special Form</code> 也會得到和使用 <code>'</code> 相同結果：</p><pre><code class="klipse nohighlight">(quote (1 2 3 4 5))
+</code></pre><p><code>'( )</code> 是 <code>(quote ( ))</code> 的簡易寫法，正式名稱為 <code>Quote Special Form</code>，是 <code>Special Form</code> 的其中一種， 而相對於 <code>Special Form</code> 的就是 <code>Lisp Form</code> 了。</p><p>左括號右邊的第一個東西會被當成 Function，第二個之後的東西會被當成參數的輸入進到 Function 中， 這是 LISP 的基本規則，也就是 LISP Form：</p><pre><code class="klipse nohighlight">(+ 1 2 3 4 5)
+</code></pre><p>這樣寫會把 1 當成 Function，2 3 4 5 當成參數，想當然會出錯，因為 1 不是 Function</p><pre><code class="klipse nohighlight">(1 2 3 4 5)
+</code></pre><p>LISP Form 再更精確說明，應該是 <code>對一個 List 求值（Eval)</code>， 假設有一個 List 如下：</p><pre><code class="klipse nohighlight">(* 2 3)
+</code></pre><p>括號中，第一個元素為<code>*</code>，第二個和第三個元素為 <code>2</code> 和 <code>3</code>，當 Clojure 對這個 List 求值時會有以下步驟：</p><ol><li>確認第一個元素是否為 Function，在本例是中 <code>*</code> 是一個 function，因此進行 LISP Form 的規則。</li><li>對第二個元素求值，得到 <code>2</code></li><li>對第三個元素求值，得到 <code>3</code></li><li>第二和第三個元素求值的結果作為輸入參數到第一個元素所表示的 Function</li><li>整個 List 求值的結果為 <code>6</code></li></ol><p>也許你會有點疑惑：“為什麼一個數字 2 還需要被求值，他不是看起來就是 2 嗎？”，會有這個問題也是正常的，在其它語言中沒有這種“求值”的動作， 在 Clojure （或者說 LISP 系的語言）中會有一個求值動作的原因是，在 Compile 前還會有一個 Reader 解析 List， Reader 看到有加 <code>'</code> 的 Symbol 或 List 才會知道不需要對他們求值。</p><p>另外，像是 <code>2</code> 這樣的基本元素 （ <code>2</code> 是 Integer），對它們求值還是會得到它們本身：</p><pre><code>(eval 2) ; =&gt; 2
+</code></pre><p>p.s. <code>eval</code> 除了表達 Evaluate 這個外，也是一個可以用的 Function。</p><p>再來一個更複雜的例子：</p><pre><code class="klipse nohighlight">(+ 1 (* 2 3) 4 5)
+</code></pre><p>求值步驟如下：</p><ol><li>確認第一個元素是否為 Function，在本例是中 <code>+</code> 是一個 Function，因此進行 LISP Form 的規則。</li><li>對第二個元素求值得到 <code>1</code></li><li>對第三個元素求值...這時候問題來了，第三個元素是一個 List：<pre><code>(* 2 3)
+</code></pre>這時 Clojure 該怎麼做？ Clojure 會優先對這個 List 求值，完成後才會對下一個元素求值，求值的結果為 <code>6</code>。</li><li>對第四個元素求值得到 <code>4</code></li><li>對第五個元素求值得到 <code>5</code>到步驟 5. 時，原 List 變成：<pre><code>(+ 1 6 4 5)
+</code></pre></li><li>元素二到五當為 Function <code>+</code> 的參數求值結果為 <code>16</code></li></ol><p>在這個例子不難看出，LISP Form 的 Eval 順序是 Depth-First：</p><p></p><center> <img src="/tutorial/img/depth-first.png" alt="depth-first" /> </center><p>LISP Form 是 Clojure 的基本規則，LISP 的其中一個 <code>動作</code> (Verb)， 除了 LISP Form 外，在接下來還會介紹到 <code>Special Form</code> 和 <code>Macro</code>。</p><h2 id="list">List</h2><p>前面已經介紹過 <code>LISP Form</code> 和 <code>Quote Special Form</code>，到此我們已經理解在 Clojure 中如果不想對資料求值， 只想表示該資料為一個 List 時，只要加上 <code>Quote</code>即可，也就是說的作用就是不求值（Delaying evaluation）， 從這點不難理解為什麼 LISP 世界的人總是在說 <code>Code is data, data is code.</code>， Data (list) 就加 <code>Quote</code>，Code (eval) 不加 <code>Quote</code>，也因為這個特性，了解怎麼操作 List 就變得相當重要。</p><p>一個操作 List 的例子：</p><pre><code class="klipse nohighlight">(eval (cons '* (rest '(+ 1 2 3 4 5))))
+</code></pre><p></p><center> <img src="/tutorial/img/depth-first-2.png" alt="depth-first-2" /> </center><p><code>'(+ 1 2 3 4 5)</code> 因為加了 <code>'</code> (Quote)，因此這是一組資料 (List)， <code>rest</code> 是我們要介紹的第一個 list 操作，功能是取出 list 中，除了第一個元素之外的其它元素，得到新的 list 回傳：</p><pre><code class="klipse nohighlight">(rest '(+ 1 2 3 4 5))
+</code></pre><p><code>cons</code> 也是 list 操作，功能是幫 list 加入新元素，要注意的是第一個參數是新元素，而第二個參數才是 list：</p><pre><code class="klipse nohighlight">(cons '* '(1 2 3 4 5))
+</code></pre><p>另外要注意的是因為 list 特性是一個串一個（Linked List），新元素放到第一個成本最小，所以前例的結果才會是 <code>(* 1 2 3 4 5)</code>。</p><p>最後到了 <code>eval</code>，被 Eval 的 list 為：</p><pre><code class="klipse nohighlight">(eval '(* 1 2 3 4 5))
+</code></pre><p>原本的 <code>+</code> 經過了 <code>rest</code> 和 <code>cons</code> 後，被轉換成 <code>*</code>，對 Clojure 來說， 程式碼可以很輕易的操作成另一個樣子，而這還不是 Clojure 最強大的特性，但到這邊我們先就此打住，優先關心 list 的操作。</p><h3 id="functions_of_list">Functions of List</h3><p>以下是常用的幾個 Function：</p><ul><li>first</li><li>rest</li><li>last</li><li>butlast</li><li>cons</li><li>conj</li><li>count</li><li>reverse</li><li>map</li><li>filter</li><li>reduce</li></ul><p><code>first</code>、<code>rest</code>、<code>last</code>、<code>butlast</code> 這四個 Function 可以視為同一組：</p><p></p><center> TODO 補圖 </center><p><br /><br /> <code>cons</code> 和 <code>conj</code> 都是可以加入新元素的 Function，<code>cons</code> 請把它想成是 first 和 rest 的反向操作，假設原 list 為 <code>(1 2 3 4 5)</code>， first 的結果為 <code>1</code>，rest 的結果為 <code>(2 3 4 5)</code>，cons 就是將 <code>1</code> 和 <code>(2 3 4 5)</code> 合併回去的方法：</p><pre><code class="klipse nohighlight">(cons 1 '(2 3 4 5))
+</code></pre><p>而 <code>conj</code> 可以把它想成是多次的 <code>cons</code>，cons 的參數只有兩個，first 的元素和 rest 的 list，在 conj 中，第一個參數就是 list 了，而接下來的參數則是元素：</p><pre><code class="klipse nohighlight">(conj '(2 3 4 5) 1 0 -1 -2)
+</code></pre><p>如果 conj 只給一個元素，那結果會和 cons 一樣：</p><pre><code class="klipse nohighlight">(conj '(2 3 4 5) 1)
+</code></pre><p>p.s. <code>cons</code> 是 Clojure 中少數和以前 LISP 名稱和功能也一樣的 symbol，它是 <code>construct</code> 的縮寫。</p><p><br /><br /> <code>count</code> 回傳 list 中有多少個元素：</p><pre><code class="klipse nohighlight">(count '("Apple" "Orange" "Banana" "Churry"))
+</code></pre><p><br /><br /> <code>reverse</code> 將 list 的內容順序反轉：</p><pre><code class="klipse nohighlight">(reverse '(1 2 3 4 5))
+</code></pre><p><code>map</code>、<code>filter</code>、<code>reduce</code> 這三個 Function 應該是最近 Functional Programming 正夯的清況下， 己經廣為人知的 Function 吧（這都要感謝 JavaScript），在 Twitter 有一則很有趣的貼文用了 Emoji 來比喻這三個 Function 的行為（雖然是 JavaScript 的例子）：</p><p></p><center> <blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">Map/filter/reduce in a tweet:<br /><br />map([🌽, 🐮, 🐔], cook)<br />=&gt; [🍿, 🍔, 🍳]<br /><br />filter([🍿, 🍔, 🍳], isVegetarian)<br />=&gt;  [🍿, 🍳]<br /><br />reduce([🍿, 🍳], eat)<br />=&gt; 💩</p>— Steven Luscher (@steveluscher) <a href="https://twitter.com/steveluscher/status/741089564329054208?ref_src=twsrc%5Etfw">June 10, 2016</a></blockquote> <script async="async" src="https://platform.twitter.com/widgets.js" charset="utf-8"></script> </center><p>JavaScript 中用 <code>[]</code> 的資料結構叫 <code>Array</code>，在這邊我們用 Collection 表示泛指非 Key-Value 類型的資料結構， JavaScript 的 <code>Array</code> 和 Clojure 的 <code>List</code> 都用 Collection 來代稱。</p><p><code>map</code> 的例子中，<code>(🌽 🐮 🐔)</code> 經過 <code>cook</code> 這個 Function 之後（先不管 cook 的實作是什麼）， 最後得到一個新的 collection <code>(🍿 🍔 🍳)</code>，<code>map</code> 的行為就是把每個元素都放到 cook 中並把結果收集起來：</p><ol><li>🌽 -&gt; cook(🌽) -&gt; 🍿</li><li>🐮 -&gt; cook(🐮) -&gt; 🍔</li><li>🐔 -&gt; cook(🐔) -&gt; 🍳</li></ol><p>Clojure 的 <code>map</code> 和 Twitter 這個 JavaScript 的例子有點不一樣的地方在 map 的參數位置，在 JavaScript 中， Collection 是放在第一個參數，Function 放第二個，而 Clojure Function 放在第一個參數，Collection 才是放第二個參數：</p><pre><code class="klipse nohighlight">(map inc '(1 2 3 4 5))
+</code></pre><p><code>inc</code> Function 的功能是將數字加 1，<code>(1 2 3 4 5)</code> 中每一個數字經過 <code>inc</code> 後， 得到新的 list <code>(2 3 4 5 6)</code>。</p><p><br /><br /></p><p><code>filter</code> 的 Function 和 map 不太一樣，map 並不限制 Function 回傳的類型，而 filter 的 Function 參數是要求回傳 <code>Boolean</code>， 而只有回傳值為 <code>true</code> 的元素才會被收集到新的 Collection，就拿 Twitter 的那個例子來說，Function <code>isVegetarian</code> 是判斷是否為素食（這個例子是蛋奶素）， 而只有爆米花和蛋符合，所以新的 Collection 只有 <code>(🍿 🍳)</code>：</p><ol><li>🍿 -&gt; isVegetarian(🍿) -&gt; true</li><li>🍔 -&gt; isVegetarian(🍔) -&gt; false</li><li>🍳 -&gt; isVegetarian(🍳) -&gt; true</li></ol><p><br /><br /></p><p><code>reduce</code> 可能是這三個 Function 中對初學者最難理解的一個了，而就 Twitter 上那個 JavaScript 的範例來說，它其實不是一個好例子， 原因是 reduce 的 Function 參數有兩個參數，第一個位置的參數通常叫 <code>accumulator</code> ，第二位置叫 <code>element</code> 或 <code>current value</code>， 當然 reduce function 的參數可能因為不同語言和不同 Library 有所差異，例如 JavaScript 的 Array reduce 中的 reduce function 就多了第三個位置的參數叫 current index ， 但不影響 redure 最重要的目的：把 Collection 內的元素傳入 reduce function 中，取得新的值再將該值和下一個元素傳入 reduce function，重複這個動作直到沒有下個元素， 就 Twitter 的例子來看：</p><ol><li>eat(null, 🍿) -&gt; 💩</li><li>eat(💩, 🍳) -&gt; 💩</li><li>💩</li></ol><p>步驟 2. 回傳和原本的 <code>accumulator</code> 相同，還是一個 💩，因為 Emoji 中沒有更大的 💩，這個例子有趣但有點失真，雖然有這一點點小缺點，以解理 reduce 來說算是一個不差的例子了。</p><p>Clojure 的 <code>reduce</code> 也和 <code>map</code>、<code>filter</code>的差不多，functino 在前，list 在後，過 reduce 有一個情況是 accumulator 的起始值，因此 reduce 有兩種情況：</p><ol><li>(reduce f coll)</li><li>(reduce f val coll)</li></ol><p><code>f</code> 表示 function，<code>coll</code> 表示 Collection，在這邊就是 list ，而 <code>val</code> 為要設定給 accumulator 的起始值，以下例子：</p><pre><code class="klipse nohighlight">(reduce + '(1 2 3 4 5))
+</code></pre><p>設定起始值的例子：</p><pre><code class="klipse nohighlight">(reduce + 10 '(1 2 3 4 5))
+</code></pre><p>沒有設定起始的情況下，完全依賴 reduce function 怎麼做，以 <code>+</code> 這個 function 來看，沒有起始值，所以 accumulator 為 nil，element 為 1， 在 <code>+</code> 實作細結中如果第一個參數是 nil，也只是把它當成 0 而己：</p><pre><code class="klipse nohighlight">(+ nil 1)
+</code></pre><h2 id="collection">Collection</h2><h3 id="sequencetial_collection">Sequencetial Collection</h3><h3 id="hashed_collection">Hashed Collection</h3><h2 id="function">Function</h2><h2 id="special_form">Special Form</h2><p>在 <a href="#lisp_form">LISP FORM</a> 的部份有提到 <code>Quote Special Form</code>，而 Quote Special Form 的功能是跳過求值， 在 Clojure 中 Special Form 是語言內建的定義，我們不能定義新的 Special Form，可以把他們當 Clojure 基本的語法來看待， 其本的 Special Form 有：</p><ol><li>def</li><li>if</li><li>do</li><li>let</li><li>quote</li><li>fn</li><li>loop &amp; recur</li></ol><p>另外還有幾個暫不說明的：var、try、throw、monitor-enter、monitor-exit。</p><p>既然叫 "Special Form"，那當然不會是 LISP Form 那樣 Depth-First 的 Eval 規則了， 有像我們己經看過的 <code>Quote Special Form</code>，反而是不 Eval list，也有像 <code>if</code> 的程式分枝， 還有 <code>def</code> 和 <code>let</code> 用來定義 symbol，Special Form 是 Clojure 中的基本功能，只要有這幾個基本的 Special Form， 整個 Clojure 的生態就能用 Macro 和 Function 建構出來。</p><h3 id="1._def">1. def</h3><p>def 是 define 的意思，<a href="https://clojure.org/reference/special_forms#def">Clojure 文件</a>中寫了：<code>(def symbol doc-string? init?)</code> 該開始看 Clojure 的文件可能不太了解這是什麼意思，在 Clojure 的文件常常會有這種“黑話”，在這邊先解釋一下這個黑話的意思：</p><ol><li><code>def</code> 就是我們想了解的這個 Special Form 名稱，不需要再特別說明。</li><li><code>symbol</code> 表示這個元素要放的是一個合法的 symbol，忘了 symbol 是什麼可以回到 <a href="#symbol_&amp;&amp;#95;keyword">Symbol &amp; Keyword</a>。</li><li><code>doc-string?</code> 表示這個元素會被當成是 Document，而它是一個 string，加了 <code>?</code> 表示它可有可無。</li><li><code>init?</code> 表示這是一個初始值，沒有特定型態，因為最後也是一個 <code>?</code>，表示它可有可無。</li></ol><p>Clojure 官方的文件風格一開始可能不是很能理解，常常還是會遇到不清楚該放什麼東西當參數， 所以 Clojure 的使用者還有另一個地方可以看說明：<a href="https://clojuredocs.org/clojure.core/def">ClojureDocs/clojure.core/def</a>， ClojureDocs 是一個社群建立的文件網站，最主要的功能是還有提供 Clojure 社群使用者們分享的範例。</p><p>回到 <code>def</code>，以下是 def 不同參數情況的範例： 如果只有一個參數 symbol 時，是在 Clojure runtime 中宣告該 symbol 有被定義，但值會是 nil：</p><pre><code class="klipse nohighlight">(def gdp)
+</code></pre><p>當只給兩個參數時，第二個參數會被當成是該 symbol 的初始值：</p><pre><code class="klipse nohighlight">(def gdp 0)
+</code></pre><p>當給三個參數時，第二個參數為說明文件而不是初始值，第三個參數才是：</p><pre><code class="klipse nohighlight">(def gdp
+  "在描述地區性生產時稱本地生產總值或地區生產總值，是一定時期內（一個季度或一年），
+一個區域內的經濟活動中所生產出之全部最終成果（產品和勞務）的市場價值（market value）。"
+  0)
+</code></pre><p>doc-string 的功用：</p><pre><code class="klipse nohighlight">(doc gdp)
+</code></pre><p>doc 是用來看各 symbol 寫好的 doc-string，在開發中， 常常會在 REPL 介面上用這個 Function 看 Clojure 的文件（不論是 Clojure 官方的還是第三方的，只要有寫 doc-string 都可以看到說明文字）。</p><p>如果給三個參數，但第二個參數不是字串時，Clojure 會出錯：</p><pre><code class="klipse nohighlight">(def gdp
+    123
+  0)
+</code></pre><h3 id="2._if">2. if</h3><p><code>if</code> 是用來產生程式分枝的 Special Form，文件格式的說明為：<code>(if test then else?)</code>， if Special Form 會先對 <code>test</code> 求值，看結果是否為<code>真</code>，如果為真，會對 <code>then</code>求值， 不為真則對 <code>else?</code> 求值，當然在前面提過，else? 有 <code>?</code> 表示它可有可無，所以如果 test 不為真， 也有可能不再做任何求值。</p><p>那為什麼 <code>test</code> 不寫成 <code>perd</code> (predict function) 就好？原因是在 <code>if</code> 的 test 是否為真是一個比較特別的判斷方式， 並不只是 Boolean 值而已，以下的值都為<code>真</code>：</p><p><code>不為真</code> 的有：</p><h3 id="3._do">3. do</h3><p><code>do</code> 在文件中格式說明為：<code>(do expr*)</code>，其中 <code>expr</code> 的意思為 s-expression，結尾加 <code>*</code> 表示有 0~n 個， 這種表示法很像 Regular Expression 的寫法，do 的效果是對這些 s-exp 求值，最終回傳值為最後一條 s-exp 的回傳。</p><p>以下例子：</p><pre><code class="klipse nohighlight">(do
+  "I can show you the world,"
+  (range 100)
+  (def locale (nth ["嘉義" "雲林" "台南" "高雄"] (rand-int 4)))
+  (def gdp (rand-int 100000))
+  (if (and (= locale "高雄")
+           (&gt; gdp 64000))
+    "發大財"
+    "北漂"))
+</code></pre><h3 id="4._let">4. let</h3><p><code>let</code> 在文件中的格式說明為：<code>(let [bindings*] exprs*)</code>，let 的結構比較特別一點， <code>[bindings*]</code> 的意思是一組 vector，內容是 symbol 的 binding，例如：</p><pre><code class="klipse nohighlight">[a 0
+ b "hello"]
+</code></pre><p>binding 後，symbol <code>a</code> 和 <code>b</code> 就可以在 let 中的 s-exp 中存取到 <code>a</code> 和 <code>b</code>，完整的例子：</p><pre><code class="klipse nohighlight">(let [var1 "value1"
+       var2 "value2"]
+   (str var1 " " var2))
+</code></pre><p>但要注意的是，在 let 外，var1 和 var2 無法被求值：</p><pre><code class="klipse nohighlight">var1
+var2
+</code></pre><h3 id="5._quote">5. quote</h3><p><code>quote</code> 在 <a href="#lisp_form">LISP Form</a> 中已經提過了，在文件中的說明為 <code>(quote form)</code>， <code>form</code> 表示不管什麼東西都是可以放到 Quote Special Form 中的，quote 的功能就是不讓這些 form 被 eval。</p><p>以下這個 s-exp 會被當成一個 List：</p><pre><code class="klipse nohighlight">(quote (* 17 (+ 8 9)))
+</code></pre><p>不管什麼東西都可以被 quote：</p><pre><code class="klipse nohighlight">(quote 🙂)
+</code></pre><h3 id="6._fn">6. fn</h3><p> fn 其實就是 Clojure 的 lambda function，寫法為：</p><p> (fn name? [params<em>] exprs</em>)  (fn name? ([params<em>] exprs</em>) +)  其中 fn 的 name 不是為了給其它 s-exp 使用的名稱，它是為了做 recursive 的名稱。  e.g.</p><pre><code>(fn [] "I'm no one!")
+</code></pre><pre><code class="klipse nohighlight">(fn fn-name [para1]
+  (str "Hello, " para1 "!"))
+</code></pre><pre><code class="klipse nohighlight">(fn-name "peter")                       ; &lt;- 會跳 exception
+                                        ; 找不到 fn-name 這個 function
+</code></pre><pre><code class="klipse nohighlight">;; 用 fn 定義一個 function, 加入參數 name (命名 power)
+(fn power [n e]
+  (if (zero? e)
+    1
+    (* n (power n (dec e)))))
+</code></pre><p>fn 外會找到名叫 "power" 的 function  理由是 fn 的 name? 參數是用來給 lambda 內做 recursive 用的 (power 2 10)                            ; 找不到 power 這個 function</p><p> 如果想要用 lambda function，就是再加一層括號，並加上 function parameter。  ((fn ,,, ,,,) ,,, ,,, )</p><pre><code>  ^         ^   ^ </code></pre>  1st exp      後面的 exp 會被 eval 後做為 1st exp 的 parameter  第一個 s-exp 就算是 lambda function 也依然符合 LISP form 的 Eval 規則 ((fn power [n e]    (if (zero? e)<pre><code> 1
+ (* n (power n (dec e))))) 2 10) </code></pre> TODO def , defn (defn function-symbol []   (function body))<p>Literally Lambda  Lambda 有一個寫法為 hash + 小刮號 ： #(exp*)</p><pre><code>#(,,,)
+ </code></pre><p> 如果只有一個參數，'%' 用來表示該參數 (#(str "Hello, " %) "Dave")</p><p>(#(str "I'm sorry " % ", I'm afraid I can't do that.") "Dave")</p><p>;; 如果有多個參數，%N (N表示數字) 能依序代表各參數 (#(list %2 %1 %3) "🙈" "🙉" "🙊")</p><h3 id="7._loop_&amp;&amp;#95;recur">7. loop &amp; recur</h3><p> 如果有學過其它語言：  for ( 起始變數 ; 終止條件 ; 變數變化 ) {  }</p><p> (loop [起始變數]</p><pre><code>(if (終止條件)
+  回傳值
+  (recur 變數變化))) </code></pre> e.g.<pre><code class="klipse nohighlight">(loop [n 10]
+  (if (&lt; n 0)
+    "BOOM!"
+    (do
+      (println n "!")
+      (Thread/sleep 100)
+      (recur (dec n)))))
+</code></pre><pre><code class="klipse nohighlight">((fn loop1 [n]
+   (if (&lt; n 0)
+     "BOOM!"
+     (do
+       (println n "!")
+       (Thread/sleep 100)
+       (loop1 (dec n))))) 10)
+</code></pre><p> loop 如果沒有 recur (loop [n 10]   (println n "!"))                      ; 結果是不會重覆執行</p><pre><code>                                    ; 也就是說 loop 一定要和 recur 一起使用 </code></pre><h2 id="what_macro_?">What Macro ?</h2><h2 id="flow_control">Flow Control</h2><h2 id="side_effect">Side Effect</h2><h2 id="重新回顧_clojure_verbs：lisp_form、special_form、macro">重新回顧 Clojure Verbs：LISP Form、Special Form、Macro</h2><h2 id="結語">結語</h2><p>到這邊為止，相信讀者應該對 Clojure 有基本的認識了，但要拿 Clojure 做一些有用的東西，還缺少了寫程式的環境，和管理專專的工具。</p><p>在自己的電腦安裝 Clojure 的環境請參考：</p><ul><li><a href="/tutorial/pages-out/environment-windows">Environment in Windows 10</a></li><li><a href="/tutorial/pages-out/environment-macos">Environment in MacOS</a></li><li><a href="/tutorial/pages-out/environment-linux">Environment in Linux</a></li></ul><p>編輯器的部份請參考：</p><ul><li><a href="/tutorial/pages-out/vim">VIM</a></li><li><a href="/tutorial/pages-out/emacs">Emacs</a></li><li><a href="/tutorial/pages-out/vscode">VSCode</a></li><li><a href="/tutorial/pages-out/intellij">IntelliJ</a></li></ul><p>有關 Clojure 進階的功能請參考：</p><ul><li><a href="/tutorial/pages-output/advantage">Advantage</a></li></ul><h2 id="code_block_的小袐密">Code Block 的小袐密</h2><p>其實本文中用到的能處理 Clojure 語法的 Code Block 並不是 Clojure 而是 ClojureScript， ClojureScript 是一個在 JavaScript 環境上跑的 Clojure，但基本語法和 Clojure 相同的， 不影響本文中 Clojure 的範例結果。</p><p>會一個 Clojure 語法就可以寫前後端，那當然會有 ClojureScript 的教學啦：</p><ul><li><a href="/tutorial/pages-out/clojurescript">ClojureScript</a></li><li><a href="/tutorial/pages-out/clojurescript-reagent">ClojureScript 的 React.js - Reagent</a></li></ul>
+
+    <div id="prev-next">
+        
+        
+        
+    </div>
+</div>
+
+            </div>
+        </div>
+    </div>
+    <footer>Copyright &copy; 2019 Clojure Tw
+        <p style="text-align: center;">Powered by <a href="http://cryogenweb.org">Cryogen</a></p></footer>
+</div>
+<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script src="/tutorial/js/highlight.pack.js" type="text/javascript"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+ <link rel="stylesheet" type="text/css" href="https://storage.googleapis.com/app.klipse.tech/css/codemirror.css">
+<script>
+window.klipse_settings = {
+  "selector" : ".klipse",
+  "selector_reagent" : ".reagent",
+  "codemirror_options_in" : {
+    "lineNumbers" : true
+  },
+  "codemirror_options_out" : {
+    "lineNumbers" : false
+  }
+};
+</script>
+<script src="https://storage.googleapis.com/app.klipse.tech/plugin/js/klipse_plugin.js"></script> 
+ <link rel="stylesheet" type="text/css" href="https://storage.googleapis.com/app.klipse.tech/css/codemirror.css">
+<script>
+window.klipse_settings = {
+  "selector" : ".klipse",
+  "selector_reagent" : ".reagent",
+  "codemirror_options_in" : {
+    "lineNumbers" : true
+  },
+  "codemirror_options_out" : {
+    "lineNumbers" : false
+  }
+};
+</script>
+<script src="https://storage.googleapis.com/app.klipse.tech/plugin/js/klipse_plugin.js"></script> 
+</body>
+</html>
